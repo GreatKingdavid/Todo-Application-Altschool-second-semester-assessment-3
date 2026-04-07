@@ -1,0 +1,28 @@
+{
+  "name": "todo-application-altschool-second-semester-assessment-3",
+  "version": "1.0.0",
+  "description": "A todo app where we can see the list of tasks, create tasks and also change the task to completed or deleted. We also want our friends and their friends to be able to use this app, so we need to add authentication for users to sign up and login. Users should be able to sort between pending and completed tasks.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GreatKingdavid/Todo-Application-Altschool-second-semester-assessment-3.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GreatKingdavid/Todo-Application-Altschool-second-semester-assessment-3/issues"
+  },
+  "homepage": "https://github.com/GreatKingdavid/Todo-Application-Altschool-second-semester-assessment-3#readme",
+  "dependencies": {
+    "dotenv": "^17.4.0",
+    "express": "^5.2.1",
+    "mongoos": "^0.0.1-security",
+    "mongoose": "^9.3.3",
+    "nodemon": "^3.1.14",
+    "winston": "^3.19.0"
+  }
+}
