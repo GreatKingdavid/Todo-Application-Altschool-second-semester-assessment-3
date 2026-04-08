@@ -1,35 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-        <title>Reminders</title>
-        <link rel="stylesheet" href="/style.css">
-    </head>
-    <body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Reminders</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
 
-        <div class="container">
-            <header class="app-header">
-                <h1>My Tasks</h1>
-                <span class="task-count"><%= todos.filter(t => t.status !== 'completed').length %> Left</span>
-            </header>
+    <div class="container">
+        <header class="app-header">
+            <h1>My Tasks</h1>
+            <span class="task-count"><%= todos.filter(t => t.status === 'pending').length %> Left</span>
+        </header>
 
-            <form action="/add" method="POST" class="add-reminder">
-                <span class="plus-icon">+</span>
-                <input type="text" name="title" placeholder="New Reminder" required autocomplete="off">
-                <button type="submit">Add</button>
-            </form>
+        <form action="/add" method="POST" class="add-reminder">
+            <input type="text" name="title" placeholder="New Reminder" required autocomplete="off">
+            <button type="submit">Add</button>
+        </form>
 
-            <div class="reminder-list">
-                <% if (todos.length === 0) { %>
-                <div class="empty-state">No Reminders</div>
-                <% } %>
+        <div class="reminder-list">
+            <% if (todos.length === 0) { %>
+                <div class="empty-state" style="text-align: center; opacity: 0.5;">No Reminders</div>
+            <% } %>
 
-                <% todos.forEach(todo => { %>
+            <% todos.forEach(todo => { %>
                 <div class="reminder-item">
-                    <form action="/update/<%= todo._id %>" method="POST" class="action-form">
+                    <form action="/update/<%= todo._id %>" method="POST">
                         <input type="hidden" name="status" value="<%= todo.status === 'completed' ? 'pending' : 'completed' %>">
-                        <button type="submit" class="circle-btn <%= todo.status === 'completed' ? 'checked' : '' %>" aria-label="Toggle Complete"></button>
+                        <button type="submit" class="circle-btn <%= todo.status === 'completed' ? 'checked' : '' %>"></button>
                     </form>
 
                     <div class="reminder-content">
@@ -41,45 +40,41 @@
                         </span>
                     </div>
 
-                    <div class="button-group" style="display: flex; gap: 8px;">
-                        <button onclick="editTask('<%= todo._id %>', '<%= todo.title %>')" class="edit-btn" style="background:none; color: #64748b;">
+                    <div style="display: flex; gap: 5px; align-items: center;">
+                        <button onclick="editTask('<%= todo._id %>', '<%= todo.title %>')" class="edit-btn">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                         </button>
 
-                        <form action="/update/<%= todo._id %>" method="POST" class="delete-form">
+                        <form action="/update/<%= todo._id %>" method="POST">
                             <input type="hidden" name="status" value="deleted">
-                            <button type="submit" class="trash-btn" aria-label="Delete Task">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M3 6h18"></path>
-                                    <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
-                                    <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
-                                </svg>
+                            <button type="submit" class="trash-btn">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
                             </button>
                         </form>
                     </div>
                 </div>
-                <% }) %>
-            </div>
+            <% }) %>
         </div>
+    </div>
 
-        <nav class="bottom-nav">
-            <a href="/" class="active"><span>All</span>Task</a>
-            <a href="/?status=pending"><span>⏳</span>Pending</a>
-            <a href="/?status=completed"><span>✅</span>Completed</a>
-            <a href="/logout"><span>👤</span>Profile</a>
-        </nav>
+    <nav class="bottom-nav">
+        <a href="/"><div>🏠</div>All</a>
+        <a href="/?status=pending"><div>⏳</div>Pending</a>
+        <a href="/?status=completed"><div>✅</div>Done</a>
+        <a href="/logout"><div>👤</div>Logout</a>
+    </nav>
 
-        <script>
-            function editTask(id, oldTitle) {
-                const newTitle = prompt("Edit Task:", oldTitle);
-                if (newTitle && newTitle !== oldTitle) {
-                    fetch(`/update/${id}`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ title: newTitle })
-                    }).then(() => window.location.reload());
-                }
+    <script>
+        function editTask(id, oldTitle) {
+            const newTitle = prompt("Edit Task:", oldTitle);
+            if (newTitle && newTitle.trim() !== "" && newTitle !== oldTitle) {
+                fetch(`/update/${id}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title: newTitle })
+                }).then(() => window.location.reload());
             }
-        </script>
-    </body>
+        }
+    </script>
+</body>
 </html>
