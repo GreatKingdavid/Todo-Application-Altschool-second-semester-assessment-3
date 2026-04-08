@@ -6,17 +6,6 @@
   --pending: #f59e0b;
   --completed: #10b981;
   --deleted: #ef4444;
-  --time-color: #64748b;
-}
-
-/* Dark Mode Support */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0f172a;
-    --card: #1e293b;
-    --text: #f8fafc;
-    --time-color: #94a3b8;
-  }
 }
 
 body {
@@ -26,7 +15,6 @@ body {
   display: flex;
   justify-content: center;
   padding: 40px 20px;
-  margin: 0;
 }
 
 .container {
@@ -35,104 +23,70 @@ body {
   max-width: 500px;
   padding: 2rem;
   border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
 }
 
 h1 { text-align: center; margin-bottom: 2rem; }
 
 /* Input Styling */
-.add-reminder { display: flex; gap: 10px; margin-bottom: 2rem; }
+form { display: flex; gap: 10px; margin-bottom: 2rem; }
 input[type="text"] {
   flex: 1;
   padding: 12px;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
   outline: none;
-  background: transparent;
-  color: var(--text);
 }
-
 button {
   background: var(--primary);
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 0 20px;
   border-radius: 8px;
   cursor: pointer;
-  font-weight: 600;
 }
 
-/* Reminder Items */
+/* Todo List Styling */
 .reminder-item {
-  background: rgba(0,0,0,0.02);
-  margin-bottom: 12px;
+  background: #f1f5f9;
+  margin-bottom: 10px;
   padding: 15px;
-  border-radius: 12px;
+  border-radius: 10px;
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 12px;
 }
 
 .reminder-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+    flex: 1;
+    margin-left: 10px;
 }
 
 .time {
-  font-size: 0.75rem;
-  color: var(--time-color);
-  margin-top: 4px;
+    display: block;
+    font-size: 0.75rem;
+    opacity: 0.6;
 }
 
-/* STATUS COLORS (The Change You Requested) */
-.title { font-size: 1rem; transition: color 0.3s ease; }
+/* --- THE CHANGES YOU ASKED FOR --- */
 
+/* Pending tasks show in your orange color */
 .status-pending { 
-  color: var(--pending) !important; 
-  font-weight: 600; 
-  text-decoration: none !important; /* No strikethrough */
+    color: var(--pending) !important; 
+    font-weight: bold; 
+    text-decoration: none !important; 
 }
 
+/* Completed tasks show in your green color with NO line-through */
 .status-completed { 
-  color: var(--completed) !important; 
-  text-decoration: none !important; /* No strikethrough */
+    color: var(--completed) !important; 
+    text-decoration: none !important; 
 }
 
-/* Circle Button (The checkbox) */
-.circle-btn {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  border: 2px solid var(--primary);
-  background: none;
-  padding: 0;
-  cursor: pointer;
+/* Ensure the generic strikethrough class doesn't show a line either */
+.strikethrough {
+    text-decoration: none !important;
 }
-.circle-btn.checked { background: var(--primary); }
 
-/* Buttons */
-.trash-btn, .edit-btn {
-  background: none;
-  border: none;
-  padding: 5px;
-  cursor: pointer;
-  color: var(--time-color);
-}
-.trash-btn:hover { color: var(--deleted); }
-.edit-btn:hover { color: var(--primary); }
-
-/* Bottom Nav */
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  max-width: 500px;
-  display: flex;
-  justify-content: space-around;
-  background: var(--card);
-  padding: 15px 0;
-  border-top: 1px solid rgba(0,0,0,0.05);
-}
-.bottom-nav a { text-decoration: none; color: var(--text); font-size: 0.8rem; text-align: center; }
-}
+.filters { margin-bottom: 1rem; text-align: center; }
+.filters a { text-decoration: none; color: var(--text); margin: 0 10px; font-size: 0.9rem; }
