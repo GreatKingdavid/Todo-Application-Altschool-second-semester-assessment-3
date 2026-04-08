@@ -26,27 +26,6 @@ body {
   box-shadow: 0 10px 25px rgba(0,0,0,0.05);
 }
 
-h1 { text-align: center; margin-bottom: 2rem; }
-
-/* Input Styling */
-form { display: flex; gap: 10px; margin-bottom: 2rem; }
-input[type="text"] {
-  flex: 1;
-  padding: 12px;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  outline: none;
-}
-button {
-  background: var(--primary);
-  color: white;
-  border: none;
-  padding: 0 20px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-/* Todo List Styling */
 .reminder-item {
   background: #f1f5f9;
   margin-bottom: 10px;
@@ -57,36 +36,44 @@ button {
   align-items: center;
 }
 
-.reminder-content {
-    flex: 1;
-    margin-left: 10px;
-}
+/* --- COLOR LOGIC (NO STROK) --- */
 
-.time {
-    display: block;
-    font-size: 0.75rem;
-    opacity: 0.6;
-}
-
-/* --- THE CHANGES YOU ASKED FOR --- */
-
-/* Pending tasks show in your orange color */
 .status-pending { 
     color: var(--pending) !important; 
-    font-weight: bold; 
+    font-weight: 600;
     text-decoration: none !important; 
 }
 
-/* Completed tasks show in your green color with NO line-through */
 .status-completed { 
     color: var(--completed) !important; 
     text-decoration: none !important; 
 }
 
-/* Ensure the generic strikethrough class doesn't show a line either */
+/* Forcefully hide any strikethrough logic from before */
 .strikethrough {
     text-decoration: none !important;
 }
 
-.filters { margin-bottom: 1rem; text-align: center; }
-.filters a { text-decoration: none; color: var(--text); margin: 0 10px; font-size: 0.9rem; }
+.reminder-content {
+    flex: 1;
+    margin-left: 12px;
+}
+
+.time {
+    font-size: 0.7rem;
+    opacity: 0.6;
+    display: block;
+}
+
+/* Checkbox Style */
+.circle-btn {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--primary);
+    background: none;
+    cursor: pointer;
+}
+.circle-btn.checked {
+    background: var(--primary);
+}
