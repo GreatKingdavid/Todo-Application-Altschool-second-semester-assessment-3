@@ -3,64 +3,136 @@
   --bg: #f8fafc;
   --card: #ffffff;
   --text: #1e293b;
-  --pending: #f59e0b; /* Orange for Pending */
-  --completed: #10b981; /* Green for Completed */
+  --pending: #f59e0b;
+  --completed: #10b981;
   --deleted: #ef4444;
+  --time-color: #64748b;
 }
 
-/* ... keep your existing body, container, input, and button styles ... */
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --text: #f8fafc;
+    --time-color: #94a3b8;
+  }
+}
 
-.reminder-item {
-  background: #f1f5f9;
-  margin-bottom: 10px;
-  padding: 15px;
-  border-radius: 10px;
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  margin: 0;
 }
 
-/* Status Colors - Change text color based on status */
-.status-pending { 
-  color: var(--pending) !important; 
+.container {
+  background: var(--card);
+  width: 100%;
+  max-width: 500px;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+h1 { text-align: center; margin-bottom: 2rem; }
+
+/* Input Styling */
+.add-reminder { display: flex; gap: 10px; margin-bottom: 2rem; }
+input[type="text"] {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  outline: none;
+  background: transparent;
+  color: var(--text);
+}
+
+button {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
   font-weight: 600;
-  text-decoration: none !important; /* Ensures NO strikethrough */
 }
 
-.status-completed { 
-  color: var(--completed) !important; 
-  text-decoration: line-through !important; /* Keeps strikethrough for finished tasks */
-  opacity: 0.6;
+/* Reminder Items */
+.reminder-item {
+  background: rgba(0,0,0,0.02);
+  margin-bottom: 12px;
+  padding: 15px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .reminder-content {
   flex: 1;
-  margin-left: 15px;
   display: flex;
   flex-direction: column;
 }
 
 .time {
   font-size: 0.75rem;
-  color: #64748b;
+  color: var(--time-color);
+  margin-top: 4px;
 }
 
-.trash-btn {
+/* STATUS COLORS (The Change You Requested) */
+.title { font-size: 1rem; transition: color 0.3s ease; }
+
+.status-pending { 
+  color: var(--pending) !important; 
+  font-weight: 600; 
+  text-decoration: none !important; /* No strikethrough */
+}
+
+.status-completed { 
+  color: var(--completed) !important; 
+  text-decoration: none !important; /* No strikethrough */
+}
+
+/* Circle Button (The checkbox) */
+.circle-btn {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--primary);
   background: none;
-  color: var(--deleted);
   padding: 0;
+  cursor: pointer;
 }
+.circle-btn.checked { background: var(--primary); }
 
-/* Bottom Nav Styling (assuming you had some) */
-.bottom-nav {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    max-width: 500px;
-    display: flex;
-    justify-content: space-around;
-    background: white;
-    padding: 15px 0;
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+/* Buttons */
+.trash-btn, .edit-btn {
+  background: none;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+  color: var(--time-color);
 }
+.trash-btn:hover { color: var(--deleted); }
+.edit-btn:hover { color: var(--primary); }
+
+/* Bottom Nav */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  justify-content: space-around;
+  background: var(--card);
+  padding: 15px 0;
+  border-top: 1px solid rgba(0,0,0,0.05);
+}
+.bottom-nav a { text-decoration: none; color: var(--text); font-size: 0.8rem; text-align: center; }
 }
