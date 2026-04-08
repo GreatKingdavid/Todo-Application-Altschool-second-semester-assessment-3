@@ -1,258 +1,66 @@
-/* --- 1. GLOBAL TOKENS & THEMES --- */
 :root {
-  --apple-blue: #007aff;
-  --system-bg: #ffffff;
-  --system-secondary-bg: #f2f2f7;
-  --system-border: #d1d1d6;
-  --system-text: #000000;
-  --system-gray: #8e8e93;
-  --glass-surface: rgba(255, 255, 255, 0.04);
-  --glass-border: rgba(255, 255, 255, 0.1);
+  --primary: #6366f1;
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --text: #1e293b;
+  --pending: #f59e0b; /* Orange for Pending */
+  --completed: #10b981; /* Green for Completed */
+  --deleted: #ef4444;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --system-bg: #000000;
-    --system-secondary-bg: #1c1c1e;
-    --system-border: #38383a;
-    --system-text: #ffffff;
-    --system-gray: #98989d;
-  }
-}
+/* ... keep your existing body, container, input, and button styles ... */
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  -webkit-tap-highlight-color: transparent;
-}
-
-body {
-  font-family:
-    -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue",
-    sans-serif;
-  background-color: var(--system-bg);
-  color: var(--system-text);
-  -webkit-font-smoothing: antialiased;
-  min-height: 100vh;
-  transition: background-color 0.3s ease;
-}
-
-/* --- 2. SAPPHIRE AUTH PAGES (LOGIN/SIGNUP) --- */
-body.auth-page {
-  background-color: #020205;
-  background-image:
-    radial-gradient(at 50% -20%, #1a1a3a 0%, transparent 50%),
-    radial-gradient(at 0% 100%, #0a0a15 0%, transparent 40%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-form#login-form,
-form#signup-form {
-  background: var(--glass-surface);
-  backdrop-filter: blur(40px) saturate(200%);
-  -webkit-backdrop-filter: blur(40px) saturate(200%);
-  border: 1px solid var(--glass-border);
-  border-radius: 28px;
-  padding: 40px;
-  width: 90%;
-  max-width: 380px;
-  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
-}
-
-form#login-form h2,
-form#signup-form h2 {
-  color: #fff;
-  font-size: 28px;
-  text-align: center;
-  margin-bottom: 24px;
-}
-
-form#login-form input,
-form#signup-form input {
-  width: 100%;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--glass-border);
-  border-radius: 12px;
-  padding: 14px;
-  color: #fff;
-  margin-bottom: 16px;
-  font-size: 16px;
-}
-
-form#login-form button,
-form#signup-form button {
-  width: 100%;
-  background: #fff;
-  color: #000;
-  font-weight: 700;
-  padding: 14px;
-  border-radius: 12px;
-  border: none;
-  cursor: pointer;
-}
-
-/* --- 3. DASHBOARD STYLES --- */
-.container {
-  width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 60px 20px 140px;
-}
-
-.app-header {
+.reminder-item {
+  background: #f1f5f9;
+  margin-bottom: 10px;
+  padding: 15px;
+  border-radius: 10px;
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 24px;
-}
-h1 {
-  font-size: 34px;
-  font-weight: 700;
-  color: var(--apple-blue);
-  letter-spacing: -0.5px;
-}
-.task-count {
-  color: var(--system-gray);
-  font-weight: 500;
+  align-items: center;
 }
 
-.reminder-list {
-  border-top: 0.5px solid var(--system-border);
-}
-.reminder-item {
-  display: flex;
-  align-items: center;
-  padding: 14px 0;
-  border-bottom: 0.5px solid var(--system-border);
-  gap: 15px;
+/* Status Colors - Change text color based on status */
+.status-pending { 
+  color: var(--pending) !important; 
+  font-weight: 600;
+  text-decoration: none !important; /* Ensures NO strikethrough */
 }
 
-.circle-btn {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  border: 1.5px solid var(--system-border);
-  background: transparent;
-  flex-shrink: 0;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.circle-btn.checked {
-  background-color: var(--apple-blue);
-  border-color: var(--apple-blue);
-}
-.circle-btn.checked::after {
-  content: "✓";
-  color: white;
-  font-size: 12px;
-  font-weight: 800;
+.status-completed { 
+  color: var(--completed) !important; 
+  text-decoration: line-through !important; /* Keeps strikethrough for finished tasks */
+  opacity: 0.6;
 }
 
 .reminder-content {
   flex: 1;
+  margin-left: 15px;
   display: flex;
   flex-direction: column;
 }
-.title {
-  font-size: 17px;
-  color: var(--system-text);
-}
-.strikethrough {
-  color: var(--system-gray);
-  text-decoration: line-through;
-}
+
 .time {
-  font-size: 12px;
-  color: var(--system-gray);
-  margin-top: 2px;
+  font-size: 0.75rem;
+  color: #64748b;
 }
 
-/* TRASH BUTTON */
 .trash-btn {
-  background: transparent;
-  border: none;
-  color: var(--system-gray);
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 8px;
-  transition: 0.2s;
-}
-.trash-btn:hover {
-  color: #ff3b30;
-  background: rgba(255, 59, 48, 0.1);
+  background: none;
+  color: var(--deleted);
+  padding: 0;
 }
 
-/* INPUT SECTION */
-.add-reminder {
-  display: flex;
-  align-items: center;
-  padding: 16px 0;
-  gap: 12px;
+/* Bottom Nav Styling (assuming you had some) */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    justify-content: space-around;
+    background: white;
+    padding: 15px 0;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
 }
-.plus-icon {
-  color: var(--apple-blue);
-  font-size: 26px;
-  font-weight: 300;
-}
-.add-reminder input {
-  border: none;
-  font-size: 17px;
-  flex: 1;
-  background: transparent;
-  color: var(--system-text);
-  outline: none;
-}
-.add-reminder button {
-  background: transparent;
-  color: var(--apple-blue);
-  font-weight: 600;
-  font-size: 17px;
-  border: none;
-  cursor: pointer;
-}
-
-/* BOTTOM NAV */
-nav.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 88px;
-  background: var(--system-bg);
-  border-top: 0.5px solid var(--system-border);
-  display: flex;
-  justify-content: space-around;
-  padding-bottom: env(safe-area-inset-bottom);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  opacity: 0.98;
-}
-nav.bottom-nav a {
-  text-decoration: none;
-  color: var(--system-gray);
-  font-size: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 25%;
-}
-nav.bottom-nav a.active {
-  color: var(--apple-blue);
-}
-nav.bottom-nav span {
-  font-size: 22px;
-  margin-bottom: 4px;
-}
-
-.empty-state {
-  text-align: center;
-  padding: 40px;
-  color: var(--system-gray);
-  font-size: 17px;
 }
