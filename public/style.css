@@ -8,72 +8,97 @@
   --deleted: #ef4444;
 }
 
+/* Automatic Dark Mode based on your screenshot */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #000000;
+    --card: #000000;
+    --text: #ffffff;
+  }
+}
+
 body {
   font-family: 'Inter', sans-serif;
   background-color: var(--bg);
   color: var(--text);
+  margin: 0;
   display: flex;
   justify-content: center;
-  padding: 40px 20px;
 }
 
 .container {
-  background: var(--card);
   width: 100%;
   max-width: 500px;
   padding: 2rem;
-  border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
 }
 
+h1 { color: #007AFF; font-size: 2.5rem; margin-bottom: 2rem; }
+
+/* Input Styling */
+form.add-reminder { display: flex; align-items: center; gap: 10px; margin-bottom: 2rem; }
+input[type="text"] {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-size: 1.2rem;
+  outline: none;
+}
+
+/* Task Item Styling */
 .reminder-item {
-  background: #f1f5f9;
-  margin-bottom: 10px;
-  padding: 15px;
-  border-radius: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid #333;
 }
 
-/* --- COLOR LOGIC (NO STROK) --- */
+.reminder-content { flex: 1; margin-left: 15px; }
+
+/* --- NO STROKE / COLOR LOGIC --- */
+.title { font-size: 1.2rem; display: block; }
 
 .status-pending { 
-    color: var(--pending) !important; 
-    font-weight: 600;
-    text-decoration: none !important; 
+  color: var(--pending) !important; 
+  text-decoration: none !important; 
 }
 
 .status-completed { 
-    color: var(--completed) !important; 
-    text-decoration: none !important; 
+  color: var(--completed) !important; 
+  text-decoration: none !important; 
 }
 
-/* Forcefully hide any strikethrough logic from before */
-.strikethrough {
-    text-decoration: none !important;
-}
+.time { font-size: 0.9rem; color: #888; margin-top: 4px; }
 
-.reminder-content {
-    flex: 1;
-    margin-left: 12px;
-}
-
-.time {
-    font-size: 0.7rem;
-    opacity: 0.6;
-    display: block;
-}
-
-/* Checkbox Style */
+/* Checkbox and Trash Buttons */
 .circle-btn {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: 2px solid var(--primary);
-    background: none;
-    cursor: pointer;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #333;
+  background: transparent;
+  cursor: pointer;
 }
-.circle-btn.checked {
-    background: var(--primary);
+.circle-btn.checked { background: var(--primary); border-color: var(--primary); }
+
+.trash-btn, .edit-btn {
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
 }
+
+/* Bottom Nav */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  padding: 20px 0;
+  background: var(--bg);
+  border-top: 1px solid #333;
+}
+.bottom-nav a { text-decoration: none; color: #888; font-size: 0.8rem; text-align: center; }
+.bottom-nav a.active { color: #007AFF; }
