@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+            content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+        <title>Reminders</title>
+        <link rel="stylesheet" href="/style.css">
+    </head>
+    <body>
+
+        <div class="container">
+            <header class="app-header">
+                <h1>My Tasks</h1>
+                <span class="task-count"><%= todos.filter(t => t.status !==
+                    'completed').length %> Left</span>
+            </header>
+
+            <form action="/add" method="POST" class="add-reminder">
+                <span class="plus-icon">+</span>
+                <input type="text" name="title" placeholder="New Reminder"
+                    required autocomplete="off">
+                <button type="submit">Add</button>
+            </form>
+
+            <div class="reminder-list">
+                <% if (todos.length === 0) { %>
+                <div class="empty-state">No Reminders</div>
+                <% } %>
+
+                <% todos.forEach(todo => { %>
+                <div class="reminder-item">
+                    <form action="/update/<%= todo._id %>" method="POST"
+                        class="action-form">
+                        <input type="hidden" name="status"
+                            value="<%= todo.status === 'completed' ? 'pending' : 'completed' %>">
+                        <button type="submit"
+                            class="circle-btn <%= todo.status === 'completed' ? 'checked' : '' %>"
+                            aria-label="Toggle Complete"></button>
+                    </form>
+
+                    <div class="reminder-content">
+                        <span
+                            class="title <%= todo.status === 'completed' ? 'strikethrough' : '' %>">
+                            <%= todo.title %>
+                        </span>
+                        <span class="time">
+                            Added <%= new
+                            Date(todo.createdAt).toLocaleTimeString([], { hour:
+                            '2-digit', minute: '2-digit' }) %>
+                        </span>
+                    </div>
+
+                    <form action="/update/<%= todo._id %>" method="POST"
+                        class="delete-form">
+                        <input type="hidden" name="status" value="deleted">
+                        <button type="submit" class="trash-btn"
+                            aria-label="Delete Task">
+                            <svg width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M3 6h18"></path>
+                                <path
+                                    d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                                <path
+                                    d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+                <% }) %>
+            </div>
+        </div>
+
+        <nav class="bottom-nav">
+            <a href="/" class="active"><span>📅</span>Today</a>
+            <a href="/?status=pending"><span>⏳</span>Upcoming</a>
+            <a href="/?status=completed"><span>✅</span>Done</a>
+            <a href="/logout"><span>👤</span>Profile</a>
+        </nav>
+
+    </body>
+</html>

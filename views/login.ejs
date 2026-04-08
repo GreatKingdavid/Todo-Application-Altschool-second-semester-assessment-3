@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Todo App</title>
+    <link rel="stylesheet" href="/style.css?v=1.2">
+</head>
+<body class="auth-page">
+    <div class="container">
+        <form id="login-form">
+            <h2>Login</h2>
+            <label for="email">Email</label>
+            <input type="text" name="email" required />
+            
+            <label for="password">Password</label>
+            <input type="password" name="password" required />
+            
+            <button>Log In</button>
+            <p>Need an account? <a href="/signup">Sign up</a></p>
+        </form>
+    </div>
+
+    <script>
+        const form = document.querySelector('#login-form');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = form.email.value;
+            const password = form.password.value;
+
+            try {
+                const res = await fetch('/login', { 
+                    method: 'POST', 
+                    body: JSON.stringify({ email, password }),
+                    headers: {'Content-Type': 'application/json'}
+                });
+                const data = await res.json();
+                if (data.user) {
+                    location.assign('/');
+                }
+            } catch (err) {
+                console.log(err);
+            }
+        });
+    </script>
+</body>
+</html>

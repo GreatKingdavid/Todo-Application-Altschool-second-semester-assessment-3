@@ -1,0 +1,67 @@
+:root {
+  --primary: #6366f1;
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --text: #1e293b;
+  --pending: #f59e0b;
+  --completed: #10b981;
+  --deleted: #ef4444;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.container {
+  background: var(--card);
+  width: 100%;
+  max-width: 500px;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+h1 { text-align: center; margin-bottom: 2rem; }
+
+/* Input Styling */
+form { display: flex; gap: 10px; margin-bottom: 2rem; }
+input[type="text"] {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  outline: none;
+}
+button {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 0 20px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Todo List Styling */
+ul { list-style: none; padding: 0; }
+li {
+  background: #f1f5f9;
+  margin-bottom: 10px;
+  padding: 15px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Status Colors */
+.status-pending { color: var(--pending); font-weight: bold; }
+.status-completed { color: var(--completed); text-decoration: line-through; }
+
+.filters { margin-bottom: 1rem; text-align: center; }
+.filters a { text-decoration: none; color: var(--text); margin: 0 10px; font-size: 0.9rem; }
+.filters a:hover { color: var(--primary); }

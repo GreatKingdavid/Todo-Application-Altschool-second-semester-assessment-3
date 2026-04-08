@@ -4,7 +4,8 @@
   "description": "A todo app where we can see the list of tasks, create tasks and also change the task to completed or deleted. We also want our friends and their friends to be able to use this app, so we need to add authentication for users to sign up and login. Users should be able to sort between pending and completed tasks.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -18,8 +19,12 @@
   },
   "homepage": "https://github.com/GreatKingdavid/Todo-Application-Altschool-second-semester-assessment-3#readme",
   "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
     "dotenv": "^17.4.0",
+    "ejs": "^5.0.1",
     "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
     "mongoos": "^0.0.1-security",
     "mongoose": "^9.3.3",
     "nodemon": "^3.1.14",

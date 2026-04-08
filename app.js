@@ -1,91 +1,31 @@
-//init app and middlewear
-const { json } = require("body-parser");
-require("dotenv").config();
-require("./utils/logger");
+require('dotenv').config();
+const express = require('express');
+const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
+const authRoutes = require('./routes/authRoutes');
+const todoRoutes = require('./routes/todoRoutes');
 
-const express = require("express");
-const { connectDB } = require("./db");
-const logger = require("./utils/logger");
-const Todo = require("./models/todos");
 const app = express();
+
+app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.set('view engine', 'ejs');
 
-//db connect
-connectDB();
+// Routes
+app.use(authRoutes);
+app.use(todoRoutes);
+app.use(express.static('public'));
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  logger.info(`Server is running on ${PORT} `);
+// Global Error Handler
+app.use((err, req, res, next) => {
+  console.error(`[LOG]: ${new Date().toISOString()} - ERROR: ${err.message}`);
+  res.status(500).send('Internal Server Error');
 });
 
-//routes
-app.get("/", async (req, res) => {
-  res.json({ message: "Welcome to username" });
-});
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => app.listen(process.env.PORT || 3000))
+  .catch(err => console.log(err));
 
-//we use this routes to add task
-app.post("/tasks", async (req, res) => {
-  try {
-    const { title, userId } = req.body;
-    const newTask = new Todo({
-      title: title,
-      userId: userId,
-    });
-
-    const saveTask = await newTask.save();
-    res.status(201).json(saveTask);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-//we use this routes to find all task
-app.get("/tasks", async (req, res) => {
-  try {
-    const todo = await Todo.find({});
-    res.json(todo);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-//we use this routes to find one task by it's id
-app.get("/tasks/:id", async (req, res) => {
-  try {
-    const taskId = req.params.id;
-    const task = await Todo.findById(taskId);
-    res.status(200).json(task);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-//we use this routes to update a task
-app.patch("/tasks/:id", async (req, res) => {
-  try {
-    const taskId = req.params.id;
-    const update = req.body;
-    const updateTask = await Todo.findByIdAndUpdate(taskId, update, {
-      returnDocument: "after",
-    });
-
-    if (!updateTask) {
-      return res.status(404).json({ message: `Task not found` });
-    }
-    res.status(200).json(updateTask);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-//we use this routes to delete a task
-app.delete("/tasks/:id", async (req, res) => {
-  try {
-    const taskId = req.params.id;
-    const task = await Todo.findByIdAndDelete(taskId);
-    res.status(200).json(task);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
+  
