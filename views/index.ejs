@@ -38,7 +38,7 @@
                     </div>
 
                     <div style="display: flex; gap: 15px;">
-                        <button onclick="editTask('<%= todo._id %>', '<%= todo.title %>')" class="edit-btn">✎</button>
+                        <button onclick="editTask('<%= todo._id %>', '<%= todo.title %>')" style="width: 50px"; class="edit-btn">✎</button>
                         <form action="/update/<%= todo._id %>" method="POST" style="margin:0;">
                             <input type="hidden" name="status" value="deleted">
                             <button type="submit" class="trash-btn">🗑</button>
