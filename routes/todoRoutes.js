@@ -19,7 +19,7 @@ router.get('/', requireAuth, async (req, res) => {
       query.status = { $ne: 'deleted' };
     }
 
-    const todos = await todo.find(query).sort({ createdAt: -1 });
+    const todos = await todo.find(query).sort({ updatedAt: -1 });
     res.render('index', { todos });
   } catch (err) {
     console.error(`[LOG]: Error fetching todos - ${err.message}`);
@@ -50,39 +50,34 @@ router.post('/add', requireAuth, async (req, res) => {
 
 /**
  * POST: Update todo (handles Status toggle, Edit title, and Delete)
- * This route works for both HTML Form submissions and JSON fetch calls
  */
 router.post('/update/:id', requireAuth, async (req, res) => {
-  try {
-    const { status, title } = req.body;
-    const updateData = {};
+    try {
+        const { status, title } = req.body;
+        const updateData = {};
 
-    // Only add fields to the update object if they were sent in the request
-    if (status) updateData.status = status;
-    if (title) updateData.title = title.trim();
+        if (status) updateData.status = status;
+        if (title) updateData.title = title.trim();
 
-    // Find by ID and ensure it belongs to the logged-in user (Security check)
-    const updatedTodo = await todo.findOneAndUpdate(
-      { _id: req.params.id, user: req.user.id },
-      updateData,
-      { new: true }
-    );
+        const updatedTask = await todo.findOneAndUpdate(
+            { _id: req.params.id, user: req.user.id },
+            updateData,
+            { new: true } // Crucial: returns the refreshed document with new timestamps
+        );
 
-    if (!updatedTodo) {
-      return res.status(404).send('Task not found or unauthorized');
+        if (!updatedTask) return res.status(404).send('Task not found');
+
+        // Check if the request is from the AJAX/Fetch (the Edit button)
+        if (req.headers['content-type'] === 'application/json') {
+            return res.json({ success: true });
+        }
+
+        // Otherwise, standard redirect for Form submissions
+        res.redirect('/');
+    } catch (err) {
+        console.error(`[LOG]: Update failed - ${err.message}`);
+        res.status(400).send('Update failed');
     }
-
-    // If the request came from our JavaScript 'fetch' (the Edit button)
-    if (req.headers['content-type'] === 'application/json') {
-      return res.json({ success: true, todo: updatedTodo });
-    }
-
-    // Standard redirect for regular Form submissions
-    res.redirect('/');
-  } catch (err) {
-    console.error(`[LOG]: Update failed - ${err.message}`);
-    res.status(400).send('Update failed');
-  }
 });
 
 module.exports = router;
