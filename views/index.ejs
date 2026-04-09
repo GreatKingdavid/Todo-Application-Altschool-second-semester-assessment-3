@@ -42,7 +42,7 @@
                     </div>
 
                     <div style="display: flex; gap: 20px; align-items: center;">
-                        <button onclick="editTask('<%= todo._id %>', '<%= todo.title %>')" class="edit-btn" style="font-size: 1.5rem; background:none; border:none; cursor:pointer;">✎</button>
+                        <button onclick="editTask('<%= todo._id %>', '<%= todo.title %>')" class="edit-btn" style="font-size: 1.9rem; background:none; border:none; cursor:pointer;">✎</button>
                         
                         <form action="/update/<%= todo._id %>" method="POST" style="margin:0;">
                             <input type="hidden" name="status" value="deleted">
