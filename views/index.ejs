@@ -21,10 +21,6 @@
         </form>
 
         <div class="reminder-list">
-            <% if (todos.length === 0) { %>
-                <div style="text-align: center; margin-top: 2rem; color: #444;">No tasks found</div>
-            <% } %>
-            
             <% todos.forEach(todo => { %>
                 <div class="reminder-item">
                     <form action="/update/<%= todo._id %>" method="POST">
@@ -36,7 +32,11 @@
                         <span class="title status-<%= todo.status %>">
                             <%= todo.title %>
                         </span>
-                        <span class="time-display" data-timestamp="<%= todo.updatedAt %>" style="font-size: 0.9rem; color: #888; display: block; margin-top: 4px;">
+                        
+                        <span class="time-display" 
+                              data-timestamp="<%= todo.updatedAt %>" 
+                              data-status="<%= todo.status %>"
+                              style="font-size: 0.9rem; color: #888; display: block; margin-top: 4px;">
                             Loading time...
                         </span>
                     </div>
@@ -55,26 +55,49 @@
     </div>
 
     <nav class="bottom-nav">
-        <a href="/" class="active"><strong>All</strong><br>Task</a>
-        <a href="/?status=pending">⌛<br>Pending</a>
-        <a href="/?status=completed">✅<br>Completed</a>
+        <a href="/" id="nav-all"><strong>All</strong><br>Task</a>
+        <a href="/?status=pending" id="nav-pending">⌛<br>Pending</a>
+        <a href="/?status=completed" id="nav-completed">✅<br>Completed</a>
         <a href="/logout">👤<br>Logout</a>
     </nav>
 
     <script>
-        // Fix for the Timezone issue
+        // 1. Logic for dynamic "Completed at" or "Edited at"
         function formatLocalTime() {
             const timeElements = document.querySelectorAll('.time-display');
             timeElements.forEach(el => {
                 const rawDate = el.getAttribute('data-timestamp');
+                const status = el.getAttribute('data-status');
+                
                 if (rawDate) {
                     const date = new Date(rawDate);
-                    el.innerText = "Added " + date.toLocaleTimeString([], { 
-                        hour: '2-digit', 
-                        minute: '2-digit' 
-                    });
+                    const formattedTime = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    
+                    // Logic check
+                    if (status === 'completed') {
+                        el.innerText = "Completed at " + formattedTime;
+                    } else {
+                        el.innerText = "Edited at " + formattedTime;
+                    }
                 }
             });
+        }
+
+        // 2. Logic for Nav Highlighting
+        function highlightNav() {
+            const params = new URLSearchParams(window.location.search);
+            const status = params.get('status');
+            
+            // Remove active class from everyone first
+            document.querySelectorAll('.bottom-nav a').forEach(link => link.classList.remove('active'));
+
+            if (status === 'pending') {
+                document.getElementById('nav-pending').classList.add('active');
+            } else if (status === 'completed') {
+                document.getElementById('nav-completed').classList.add('active');
+            } else if (window.location.pathname === '/') {
+                document.getElementById('nav-all').classList.add('active');
+            }
         }
 
         function editTask(id, oldTitle) {
@@ -88,8 +111,8 @@
             }
         }
 
-        // Initialize time formatting
         formatLocalTime();
+        highlightNav();
     </script>
 </body>
 </html>
