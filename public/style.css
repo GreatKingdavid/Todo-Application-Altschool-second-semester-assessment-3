@@ -1,24 +1,15 @@
-/* 1. VARIABLES & THEME */
 :root {
   --primary: #6366f1;
   --bg: #f8fafc;
-  --card: #ffffff;
   --text: #1e293b;
   --pending: #f59e0b;
   --completed: #10b981;
-  --deleted: #ef4444;
 }
 
-/* Automatic Dark Mode based on your screenshot */
 @media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #000000;
-    --card: #000000;
-    --text: #ffffff;
-  }
+  :root { --bg: #000000; --text: #ffffff; }
 }
 
-/* 2. CORE LAYOUT */
 body {
   font-family: 'Inter', sans-serif;
   background-color: var(--bg);
@@ -26,196 +17,50 @@ body {
   margin: 0;
   display: flex;
   justify-content: center;
-  min-height: 100vh;
 }
 
-.container {
-  width: 100%;
-  max-width: 500px;
-  padding: 2rem;
-  padding-bottom: 100px; /* Space for bottom nav */
-}
+.container { width: 100%; max-width: 500px; padding: 2rem; padding-bottom: 100px; }
 
-h1 { 
-  color: #007AFF; 
-  font-size: 2.5rem; 
-  margin-bottom: 2rem; 
-}
+h1 { color: #007AFF; font-size: 2.5rem; margin-bottom: 2rem; }
 
-/* 3. INPUTS & FORMS */
-form.add-reminder { 
-  display: flex; 
-  align-items: center; 
-  gap: 10px; 
-  margin-bottom: 2rem; 
-}
-
+.add-reminder { display: flex; align-items: center; gap: 10px; margin-bottom: 2rem; }
 input[type="text"] {
-  flex: 1;
-  background: transparent;
-  border: none;
-  color: var(--text);
-  font-size: 1.2rem;
-  outline: none;
+  flex: 1; background: transparent; border: none; color: var(--text);
+  font-size: 1.2rem; outline: none;
 }
 
-/* 4. TASK ITEMS */
 .reminder-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 0;
-  border-bottom: 1px solid #333;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1rem 0; border-bottom: 1px solid #333;
 }
 
-.reminder-content { 
-  flex: 1; 
-  margin-left: 15px; 
-}
+.status-pending { color: var(--pending) !important; text-decoration: none !important; }
+.status-completed { color: var(--completed) !important; text-decoration: none !important; }
 
-/* --- STATUS COLORS (NO STROKE) --- */
-.title { 
-  font-size: 1.2rem; 
-  display: block; 
-}
-
-.status-pending { 
-  color: var(--pending) !important; 
-  text-decoration: none !important; 
-}
-
-.status-completed { 
-  color: var(--completed) !important; 
-  text-decoration: none !important; 
-}
-
-.time { 
-  font-size: 0.9rem; 
-  color: #888; 
-  margin-top: 4px; 
-}
-
-/* 5. BUTTONS */
 .circle-btn {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  border: 2px solid #333;
-  background: transparent;
-  cursor: pointer;
+  width: 24px; height: 24px; border-radius: 50%; border: 2px solid #333;
+  background: transparent; cursor: pointer;
 }
+.circle-btn.checked { background: #007AFF; border-color: #007AFF; }
 
-.circle-btn.checked { 
-  background: #007AFF; 
-  border-color: #007AFF; 
-}
-
-.trash-btn, .edit-btn {
-  background: none;
-  border: none;
-  color: #888;
-  cursor: pointer;
-  transition: transform 0.1s;
-}
-
-.trash-btn:active, .edit-btn:active {
-    transform: scale(0.9);
-}
-
-/* 6. BOTTOM NAVIGATION */
+/* NAVIGATION STYLING */
 .bottom-nav {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  max-width: 500px; /* Match container width */
-  display: flex;
-  justify-content: space-around;
-  padding: 20px 0;
-  background: var(--bg);
-  border-top: 1px solid #333;
-  z-index: 100;
+  position: fixed; bottom: 0; width: 100%; max-width: 500px;
+  display: flex; justify-content: space-around; padding: 20px 0;
+  background: var(--bg); border-top: 1px solid #333;
 }
+.bottom-nav a { text-decoration: none; color: #888; font-size: 0.8rem; text-align: center; }
 
-.bottom-nav a { 
-  text-decoration: none; 
-  color: #888; 
-  font-size: 0.8rem; 
-  text-align: center; 
-  transition: color 0.2s;
-}
+/* FIX: Specific yellow highlight for Pending Section */
+#nav-pending.active { color: var(--pending) !important; font-weight: bold; }
 
-/* HIGH-LIGHTING LOGIC */
-.bottom-nav a.active { 
-  color: #007AFF !important; 
-  font-weight: bold;
-}
+/* Default active highlights (Blue) */
+.bottom-nav a.active { color: #007AFF; font-weight: bold; }
 
-/* 7. AUTH PAGES (SIGNUP & LOGIN) */
-.auth-page {
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--bg);
-}
-
-.auth-card {
-  width: 100%;
-  max-width: 400px;
-  padding: 2rem;
-  text-align: center;
-}
-
-.auth-card h1 {
-  color: #007AFF;
-  font-size: 2.2rem;
-  margin-bottom: 0.5rem;
-}
-
-.auth-card p {
-  color: #888;
-  margin-bottom: 2rem;
-}
-
-.auth-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.auth-form input {
-  background: #1c1c1e; /* iOS Dark Input Grey */
-  border: 1px solid #333;
-  padding: 16px;
-  border-radius: 12px;
-  color: white;
-  font-size: 1rem;
-  outline: none;
-}
-
-.auth-form input:focus {
-  border-color: #007AFF;
-}
-
-.auth-btn {
-  background: #007AFF;
-  color: white;
-  padding: 16px;
-  border-radius: 12px;
-  border: none;
-  font-weight: bold;
-  font-size: 1.1rem;
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-.auth-footer {
-  margin-top: 2rem;
-  color: #888;
-}
-
-.auth-footer a {
-  color: #007AFF;
-  text-decoration: none;
-  font-weight: 500;
-}
+/* AUTH STYLES */
+.auth-page { height: 100vh; display: flex; align-items: center; justify-content: center; }
+.auth-card { width: 100%; max-width: 400px; padding: 2rem; text-align: center; }
+.auth-form { display: flex; flex-direction: column; gap: 15px; }
+.auth-form input { background: #1c1c1e; border: 1px solid #333; padding: 16px; border-radius: 12px; color: white; outline: none; }
+.auth-btn { background: #007AFF; color: white; padding: 16px; border-radius: 12px; border: none; font-weight: bold; cursor: pointer; }
+.auth-footer a { color: #007AFF; text-decoration: none; }
