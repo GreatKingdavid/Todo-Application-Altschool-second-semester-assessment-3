@@ -21,6 +21,10 @@
         </form>
 
         <div class="reminder-list">
+            <% if (todos.length === 0) { %>
+                <div style="text-align: center; margin-top: 2rem; color: #444;">No tasks found</div>
+            <% } %>
+            
             <% todos.forEach(todo => { %>
                 <div class="reminder-item">
                     <form action="/update/<%= todo._id %>" method="POST">
@@ -28,20 +32,21 @@
                         <button type="submit" class="circle-btn <%= todo.status === 'completed' ? 'checked' : '' %>"></button>
                     </form>
 
-                    <div class="reminder-content">
+                    <div class="reminder-content" style="flex: 1; margin-left: 15px;">
                         <span class="title status-<%= todo.status %>">
                             <%= todo.title %>
                         </span>
-                        <span class="time">
-                            Added <%= new Date(todo.updatedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %>
+                        <span class="time-display" data-timestamp="<%= todo.updatedAt %>" style="font-size: 0.9rem; color: #888; display: block; margin-top: 4px;">
+                            Loading time...
                         </span>
                     </div>
 
-                    <div style="display: flex; gap: 15px;">
-                        <button onclick="editTask('<%= todo._id %>', '<%= todo.title %>')" style="width: 50px"; class="edit-btn">📝</button>
+                    <div style="display: flex; gap: 20px; align-items: center;">
+                        <button onclick="editTask('<%= todo._id %>', '<%= todo.title %>')" class="edit-btn" style="font-size: 1.5rem; background:none; border:none; cursor:pointer;">✎</button>
+                        
                         <form action="/update/<%= todo._id %>" method="POST" style="margin:0;">
                             <input type="hidden" name="status" value="deleted">
-                            <button type="submit" class="trash-btn">🗑</button>
+                            <button type="submit" class="trash-btn" style="font-size: 1.5rem; background:none; border:none; cursor:pointer;">🗑</button>
                         </form>
                     </div>
                 </div>
@@ -57,6 +62,21 @@
     </nav>
 
     <script>
+        // Fix for the Timezone issue
+        function formatLocalTime() {
+            const timeElements = document.querySelectorAll('.time-display');
+            timeElements.forEach(el => {
+                const rawDate = el.getAttribute('data-timestamp');
+                if (rawDate) {
+                    const date = new Date(rawDate);
+                    el.innerText = "Added " + date.toLocaleTimeString([], { 
+                        hour: '2-digit', 
+                        minute: '2-digit' 
+                    });
+                }
+            });
+        }
+
         function editTask(id, oldTitle) {
             const newTitle = prompt("Edit Task:", oldTitle);
             if (newTitle && newTitle.trim() !== "" && newTitle !== oldTitle) {
@@ -67,6 +87,9 @@
                 }).then(() => window.location.reload());
             }
         }
+
+        // Initialize time formatting
+        formatLocalTime();
     </script>
 </body>
 </html>
