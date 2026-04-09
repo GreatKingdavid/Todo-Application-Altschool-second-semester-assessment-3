@@ -32,7 +32,6 @@
                         <span class="title status-<%= todo.status %>">
                             <%= todo.title %>
                         </span>
-                        
                         <span class="time-display" 
                               data-timestamp="<%= todo.updatedAt %>" 
                               data-status="<%= todo.status %>"
@@ -42,7 +41,9 @@
                     </div>
 
                     <div style="display: flex; gap: 20px; align-items: center;">
-                        <button onclick="editTask('<%= todo._id %>', '<%= todo.title %>')" class="edit-btn" style="font-size: 1.9rem; background:none; border:none; cursor:pointer;">✎</button>
+                        <% if (todo.status !== 'completed') { %>
+                            <button onclick="editTask('<%= todo._id %>', '<%= todo.title %>')" class="edit-btn" style="font-size: 1.9rem; background:none; border:none; cursor:pointer;">✎</button>
+                        <% } %>
                         
                         <form action="/update/<%= todo._id %>" method="POST" style="margin:0;">
                             <input type="hidden" name="status" value="deleted">
@@ -62,35 +63,23 @@
     </nav>
 
     <script>
-        // 1. Logic for dynamic "Completed at" or "Edited at"
         function formatLocalTime() {
             const timeElements = document.querySelectorAll('.time-display');
             timeElements.forEach(el => {
                 const rawDate = el.getAttribute('data-timestamp');
                 const status = el.getAttribute('data-status');
-                
                 if (rawDate) {
                     const date = new Date(rawDate);
                     const formattedTime = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                    
-                    // Logic check
-                    if (status === 'completed') {
-                        el.innerText = "Completed at " + formattedTime;
-                    } else {
-                        el.innerText = "Edited at " + formattedTime;
-                    }
+                    el.innerText = (status === 'completed' ? "Completed at " : "Edited at ") + formattedTime;
                 }
             });
         }
 
-        // 2. Logic for Nav Highlighting
         function highlightNav() {
             const params = new URLSearchParams(window.location.search);
             const status = params.get('status');
-            
-            // Remove active class from everyone first
             document.querySelectorAll('.bottom-nav a').forEach(link => link.classList.remove('active'));
-
             if (status === 'pending') {
                 document.getElementById('nav-pending').classList.add('active');
             } else if (status === 'completed') {
