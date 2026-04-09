@@ -1,3 +1,4 @@
+/* 1. VARIABLES & THEME */
 :root {
   --primary: #6366f1;
   --bg: #f8fafc;
@@ -17,6 +18,7 @@
   }
 }
 
+/* 2. CORE LAYOUT */
 body {
   font-family: 'Inter', sans-serif;
   background-color: var(--bg);
@@ -24,18 +26,30 @@ body {
   margin: 0;
   display: flex;
   justify-content: center;
+  min-height: 100vh;
 }
 
 .container {
   width: 100%;
   max-width: 500px;
   padding: 2rem;
+  padding-bottom: 100px; /* Space for bottom nav */
 }
 
-h1 { color: #007AFF; font-size: 2.5rem; margin-bottom: 2rem; }
+h1 { 
+  color: #007AFF; 
+  font-size: 2.5rem; 
+  margin-bottom: 2rem; 
+}
 
-/* Input Styling */
-form.add-reminder { display: flex; align-items: center; gap: 10px; margin-bottom: 2rem; }
+/* 3. INPUTS & FORMS */
+form.add-reminder { 
+  display: flex; 
+  align-items: center; 
+  gap: 10px; 
+  margin-bottom: 2rem; 
+}
+
 input[type="text"] {
   flex: 1;
   background: transparent;
@@ -45,7 +59,7 @@ input[type="text"] {
   outline: none;
 }
 
-/* Task Item Styling */
+/* 4. TASK ITEMS */
 .reminder-item {
   display: flex;
   justify-content: space-between;
@@ -54,10 +68,16 @@ input[type="text"] {
   border-bottom: 1px solid #333;
 }
 
-.reminder-content { flex: 1; margin-left: 15px; }
+.reminder-content { 
+  flex: 1; 
+  margin-left: 15px; 
+}
 
-/* --- NO STROKE / COLOR LOGIC --- */
-.title { font-size: 1.2rem; display: block; }
+/* --- STATUS COLORS (NO STROKE) --- */
+.title { 
+  font-size: 1.2rem; 
+  display: block; 
+}
 
 .status-pending { 
   color: var(--pending) !important; 
@@ -69,9 +89,13 @@ input[type="text"] {
   text-decoration: none !important; 
 }
 
-.time { font-size: 0.9rem; color: #888; margin-top: 4px; }
+.time { 
+  font-size: 0.9rem; 
+  color: #888; 
+  margin-top: 4px; 
+}
 
-/* Checkbox and Trash Buttons */
+/* 5. BUTTONS */
 .circle-btn {
   width: 24px;
   height: 24px;
@@ -80,33 +104,53 @@ input[type="text"] {
   background: transparent;
   cursor: pointer;
 }
-.circle-btn.checked { background: var(--primary); border-color: var(--primary); }
+
+.circle-btn.checked { 
+  background: #007AFF; 
+  border-color: #007AFF; 
+}
 
 .trash-btn, .edit-btn {
   background: none;
   border: none;
   color: #888;
   cursor: pointer;
+  transition: transform 0.1s;
 }
 
-/* Bottom Nav */
+.trash-btn:active, .edit-btn:active {
+    transform: scale(0.9);
+}
+
+/* 6. BOTTOM NAVIGATION */
 .bottom-nav {
   position: fixed;
   bottom: 0;
   width: 100%;
+  max-width: 500px; /* Match container width */
   display: flex;
   justify-content: space-around;
   padding: 20px 0;
   background: var(--bg);
   border-top: 1px solid #333;
+  z-index: 100;
 }
 
+.bottom-nav a { 
+  text-decoration: none; 
+  color: #888; 
+  font-size: 0.8rem; 
+  text-align: center; 
+  transition: color 0.2s;
+}
 
-.bottom-nav a { text-decoration: none; color: #888; font-size: 0.8rem; text-align: center; }
-.bottom-nav a.active { color: #007AFF; }
+/* HIGH-LIGHTING LOGIC */
+.bottom-nav a.active { 
+  color: #007AFF !important; 
+  font-weight: bold;
+}
 
-/* --- ADDED FOR SIGNUP & LOGIN PAGE --- */
-
+/* 7. AUTH PAGES (SIGNUP & LOGIN) */
 .auth-page {
   height: 100vh;
   display: flex;
@@ -140,7 +184,7 @@ input[type="text"] {
 }
 
 .auth-form input {
-  background: #1c1c1e; /* Matches iOS dark mode input background */
+  background: #1c1c1e; /* iOS Dark Input Grey */
   border: 1px solid #333;
   padding: 16px;
   border-radius: 12px;
