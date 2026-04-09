@@ -104,3 +104,74 @@ input[type="text"] {
 
 .bottom-nav a { text-decoration: none; color: #888; font-size: 0.8rem; text-align: center; }
 .bottom-nav a.active { color: #007AFF; }
+
+/* --- ADDED FOR SIGNUP & LOGIN PAGE --- */
+
+.auth-page {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg);
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 2rem;
+  text-align: center;
+}
+
+.auth-card h1 {
+  color: #007AFF;
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.auth-card p {
+  color: #888;
+  margin-bottom: 2rem;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.auth-form input {
+  background: #1c1c1e; /* Matches iOS dark mode input background */
+  border: 1px solid #333;
+  padding: 16px;
+  border-radius: 12px;
+  color: white;
+  font-size: 1rem;
+  outline: none;
+}
+
+.auth-form input:focus {
+  border-color: #007AFF;
+}
+
+.auth-btn {
+  background: #007AFF;
+  color: white;
+  padding: 16px;
+  border-radius: 12px;
+  border: none;
+  font-weight: bold;
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.auth-footer {
+  margin-top: 2rem;
+  color: #888;
+}
+
+.auth-footer a {
+  color: #007AFF;
+  text-decoration: none;
+  font-weight: 500;
+}
