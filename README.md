@@ -38,6 +38,8 @@ Installation & Setup
 git clone https://github.com/GreatKingdavid/Todo-Application-Altschool-second-semester-assessment-3
 cd your repo name
 
+demo: https://todo-application-altschool-second.onrender.com/
+
 Install dependencies:
 
 1. npm install
