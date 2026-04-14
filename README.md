@@ -23,7 +23,7 @@ A sleek, iOS-inspired task management application built with Node.js, Express, a
 
 • Frontend: EJS (Embedded JavaScript templates), Vanilla CSS
 
-• Authentication: JSON Web Tokens (JWT) or Session-based auth
+• Authentication: JSON Web Tokens (JWT) auth
 
 📊 Database Schema (ERD)
 
