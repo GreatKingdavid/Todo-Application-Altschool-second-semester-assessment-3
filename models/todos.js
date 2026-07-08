@@ -8,7 +8,7 @@ const todoSchema = new mongoose.Schema({
     enum: ['pending', 'completed', 'deleted', 'overdue'],
     default: 'pending'
   },
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true }
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }
 }, { timestamps: true });
 
 module.exports = mongoose.model('todo', todoSchema);
