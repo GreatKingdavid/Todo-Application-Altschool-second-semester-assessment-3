@@ -26,10 +26,10 @@ app.set('view engine', 'ejs');
 app.use(authRoutes);
 app.use(todoRoutes);
 
-// Socket.io
+// Socket.io with JWT Auth
 io.use((socket, next) => {
   const token = socket.handshake.auth.token;
-  if (!token) return next(new Error('No token'));
+  if (!token) return next(new Error('Authentication error'));
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) return next(new Error('Invalid token'));
     socket.userId = decoded.id;
@@ -38,11 +38,15 @@ io.use((socket, next) => {
 });
 
 io.on('connection', (socket) => {
-  console.log(`User connected: ${socket.userId}`);
+  console.log(`✅ User connected: ${socket.userId}`);
   socket.join(socket.userId);
+
+  socket.on('disconnect', () => {
+    console.log(`❌ User disconnected: ${socket.userId}`);
+  });
 });
 
-// Overdue Checker + Email
+// Background Overdue Checker
 cron.schedule('* * * * *', async () => {
   try {
     const now = new Date();
@@ -56,18 +60,21 @@ cron.schedule('* * * * *', async () => {
       await task.save();
 
       io.to(task.user._id.toString()).emit('taskOverdue', {
+        taskId: task._id,
         title: task.title
       });
 
-      if (task.user.email) {
-        await sendOverdueEmail(task.user.email, task);
-      }
+     // Email
+if (task.user.email) {
+  sendOverdueEmail(task.user.email, task);
+}
     }
   } catch (err) {
-    console.error('Overdue check error:', err);
+    console.error('Overdue check failed:', err);
   }
 });
 
+// email function
 async function sendOverdueEmail(email, task) {
   try {
     const transporter = nodemailer.createTransport({
@@ -81,24 +88,25 @@ async function sendOverdueEmail(email, task) {
     await transporter.sendMail({
       from: `"Todo App" <${process.env.EMAIL_USER}>`,
       to: email,
-      subject: `🚨 Overdue: ${task.title}`,
+      subject: `🚨 Overdue Task: ${task.title}`,
       html: `
         <h2>Your task is overdue!</h2>
         <p><strong>${task.title}</strong></p>
-        <p>Due: ${new Date(task.dueDate).toLocaleString()}</p>
-        <p>Please complete it as soon as possible.</p>
+        <p>Due date was: ${new Date(task.dueDate).toLocaleString()}</p>
       `
     });
-    console.log(`✅ Email sent to ${email}`);
+    console.log(`Email sent to ${email}`);
   } catch (e) {
-    console.error('❌ Email failed:', e.message);
+    console.error('Email failed:', e.message);
   }
 }
 
 mongoose.connect(process.env.MONGODB_URI)
-  .then(() => server.listen(process.env.PORT || 3000, () => {
-    console.log(`🚀 Server running on port ${process.env.PORT || 3000}`);
-  }))
-  .catch(err => console.error(err));
+  .then(() => {
+    server.listen(process.env.PORT || 3000, () => {
+      console.log(`🚀 Server running on http://localhost:${process.env.PORT || 3000}`);
+    });
+  })
+  .catch(err => console.log(err));
 
 module.exports = { io };
