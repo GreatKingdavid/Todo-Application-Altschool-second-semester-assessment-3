@@ -6,7 +6,7 @@ const http = require('http');
 const { Server } = require('socket.io');
 const jwt = require('jsonwebtoken');
 const cron = require('node-cron');
-const nodemailer = require('nodemailer');
+const { sendOverdueEmail } = require('./utils/mailer');
 
 const authRoutes = require('./routes/authRoutes');
 const todoRoutes = require('./routes/todoRoutes');
@@ -65,28 +65,6 @@ cron.schedule('* * * * *', async () => {
     console.error('Overdue check failed:', err);
   }
 });
-
-async function sendOverdueEmail(email, task) {
-  try {
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      }
-    });
-
-    await transporter.sendMail({
-      from: `"Todo App" <${process.env.EMAIL_USER}>`,
-      to: email,
-      subject: `🚨 Overdue: ${task.title}`,
-      html: `<h2>Task Overdue!</h2><p>${task.title}</p><p>Due: ${new Date(task.dueDate).toLocaleString()}</p>`
-    });
-    console.log(`✅ Email sent to ${email}`);
-  } catch (e) {
-    console.error('❌ Email failed:', e.message);
-  }
-}
 
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {

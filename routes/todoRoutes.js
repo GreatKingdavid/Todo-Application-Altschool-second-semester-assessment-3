@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const Todo = require('../models/todos');
 const { requireAuth } = require('../middleware/authMiddleware');
+const { sendCompletionEmail } = require('../utils/mailer');
 
 const router = Router();
 
@@ -57,14 +58,18 @@ router.post('/update/:id', requireAuth, async (req, res) => {
       { _id: req.params.id, user: req.user.id },
       updateData,
       { new: true }
-    );
+    ).populate('user');
 
     if (!updatedTask) return res.status(404).send('Task not found');
 
-    // Real-time notification for completion
+    // Real-time notification + email for completion
     if (status === 'completed') {
       const { io } = require('../app');
       if (io) io.to(req.user.id.toString()).emit('taskCompleted', { title: updatedTask.title });
+
+      if (updatedTask.user.email) {
+        await sendCompletionEmail(updatedTask.user.email, updatedTask);
+      }
     }
 
     if (req.headers['content-type'] === 'application/json') {
