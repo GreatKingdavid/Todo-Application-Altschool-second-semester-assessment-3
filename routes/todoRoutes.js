@@ -1,83 +1,81 @@
 const { Router } = require('express');
-const todo = require('../models/todos');
+const Todo = require('../models/todos');
 const { requireAuth } = require('../middleware/authMiddleware');
 
 const router = Router();
 
-/**
- * GET: Display todos based on status filter
- */
+// GET All Tasks (with filter)
 router.get('/', requireAuth, async (req, res) => {
   try {
     const statusFilter = req.query.status;
     let query = { user: req.user.id };
 
-    if (statusFilter === 'pending' || statusFilter === 'completed') {
+    if (statusFilter === 'pending' || statusFilter === 'completed' || statusFilter === 'overdue') {
       query.status = statusFilter;
     } else {
-      // Default: show everything that isn't deleted
       query.status = { $ne: 'deleted' };
     }
 
-    const todos = await todo.find(query).sort({ updatedAt: -1 });
+    const todos = await Todo.find(query).sort({ updatedAt: -1 });
     res.render('index', { todos });
   } catch (err) {
-    console.error(`[LOG]: Error fetching todos - ${err.message}`);
-    res.status(500).send('Internal Server Error');
+    console.error(err);
+    res.status(500).send('Server Error');
   }
 });
 
-/**
- * POST: Add a new todo
- */
+// POST Add New Task (with dueDate)
 router.post('/add', requireAuth, async (req, res) => {
   try {
-    const { title } = req.body;
-    if (!title) return res.status(400).send('Title is required');
+    const { title, dueDate } = req.body;
+    if (!title) return res.status(400).send('Title required');
 
-    await todo.create({ 
-      title: title.trim(), 
-      user: req.user.id, 
-      status: 'pending' 
+    await Todo.create({
+      title: title.trim(),
+      dueDate: dueDate ? new Date(dueDate) : null,
+      user: req.user.id,
+      status: 'pending'
     });
-    
+
     res.redirect('/');
   } catch (err) {
-    console.error(`[LOG]: Error adding todo - ${err.message}`);
-    res.status(400).send('Could not add task');
+    console.error(err);
+    res.status(400).send('Failed to add task');
   }
 });
 
-/**
- * POST: Update todo (handles Status toggle, Edit title, and Delete)
- */
+// POST Update Task (Complete / Edit / Delete)
 router.post('/update/:id', requireAuth, async (req, res) => {
-    try {
-        const { status, title } = req.body;
-        const updateData = {};
+  try {
+    const { status, title } = req.body;
+    const updateData = {};
 
-        if (status) updateData.status = status;
-        if (title) updateData.title = title.trim();
+    if (status) updateData.status = status;
+    if (title) updateData.title = title.trim();
 
-        const updatedTask = await todo.findOneAndUpdate(
-            { _id: req.params.id, user: req.user.id },
-            updateData,
-            { new: true } // Crucial: returns the refreshed document with new timestamps
-        );
+    const updatedTask = await Todo.findOneAndUpdate(
+      { _id: req.params.id, user: req.user.id },
+      updateData,
+      { new: true }
+    );
 
-        if (!updatedTask) return res.status(404).send('Task not found');
+    if (!updatedTask) return res.status(404).send('Task not found');
 
-        // Check if the request is from the AJAX/Fetch (the Edit button)
-        if (req.headers['content-type'] === 'application/json') {
-            return res.json({ success: true });
-        }
-
-        // Otherwise, standard redirect for Form submissions
-        res.redirect('/');
-    } catch (err) {
-        console.error(`[LOG]: Update failed - ${err.message}`);
-        res.status(400).send('Update failed');
+    // Real-time notification for completion
+    if (status === 'completed') {
+      const { io } = require('../app');
+      if (io) io.to(req.user.id.toString()).emit('taskCompleted', { title: updatedTask.title });
     }
+
+    if (req.headers['content-type'] === 'application/json') {
+      return res.json({ success: true });
+    }
+
+    res.redirect('/');
+  } catch (err) {
+    console.error(err);
+    res.status(400).send('Update failed');
+  }
 });
 
 module.exports = router;
