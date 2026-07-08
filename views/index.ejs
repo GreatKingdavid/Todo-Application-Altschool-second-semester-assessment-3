@@ -66,10 +66,19 @@
     </nav>
 
     <script>
-        const socket = io({ auth: { token: document.cookie.split('; ').find(r => r.startsWith('jwt='))?.split('=')[1] } });
+        const socket = io({ auth: { token: "<%= token %>" } });
+
+        socket.on('connect_error', err => {
+            console.error('Socket connection failed:', err.message);
+        });
 
         socket.on('taskOverdue', data => {
             alert(`⚠️ OVERDUE: ${data.title}`);
+            location.reload();
+        });
+
+        socket.on('taskCompleted', data => {
+            alert(`✅ Completed: ${data.title}`);
             location.reload();
         });
 

@@ -17,7 +17,7 @@ router.get('/', requireAuth, async (req, res) => {
     }
 
     const todos = await Todo.find(query).sort({ updatedAt: -1 });
-    res.render('index', { todos });
+    res.render('index', { todos, token: req.cookies.jwt });
   } catch (err) {
     console.error(err);
     res.status(500).send('Server Error');
