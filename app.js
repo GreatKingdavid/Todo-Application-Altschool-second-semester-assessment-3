@@ -25,7 +25,25 @@ app.use((err, req, res, next) => {
 });
 
 mongoose.connect(process.env.MONGODB_URI)
-  .then(() => app.listen(process.env.PORT || 3000))
-  .catch(err => console.log(err));
+  .then(() => {
+    console.log(`[LOG]: Connected to Database: ${mongoose.connection.name}`);
+    console.log(`[LOG]: Host: ${mongoose.connection.host}`);
+    
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+      console.log(`[LOG]: Server running on port ${PORT}`);
+    });
+  })
+  .catch(err => {
+    console.error("[ERROR]: Could not connect to MongoDB!", err);
+  });
+
+
+// mongoose.connect(process.env.MONGODB_URI)
+//   .then(() => app.listen(process.env.PORT || 3000))
+//   .catch(err => console.log(err));
+
+//   console.log("DEBUG: Connecting to:", mongoose.connection.host);
+// console.log("DEBUG: Database Name:", mongoose.connection.name);
 
   
