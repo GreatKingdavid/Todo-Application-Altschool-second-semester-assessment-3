@@ -1,20 +1,14 @@
 const mongoose = require('mongoose');
 
 const todoSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true
-  },
+  title: { type: String, required: true },
+  dueDate: { type: Date },
   status: {
     type: String,
-    enum: ['pending', 'completed', 'deleted'],
+    enum: ['pending', 'completed', 'deleted', 'overdue'],
     default: 'pending'
   },
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'user',
-    required: true
-  }
-}, { timestamps: true }); // This ensures updatedAt changes on every edit
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true }
+}, { timestamps: true });
 
 module.exports = mongoose.model('todo', todoSchema);
