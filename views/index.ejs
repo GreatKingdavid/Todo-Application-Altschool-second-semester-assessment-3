@@ -73,12 +73,12 @@
         });
 
         socket.on('taskOverdue', data => {
-            alert(`⚠️ OVERDUE: ${data.title}`);
+            //alert(`⚠️ OVERDUE: ${data.title}`);
             location.reload();
         });
 
         socket.on('taskCompleted', data => {
-            alert(`✅ Completed: ${data.title}`);
+            //alert(`✅ Completed: ${data.title}`);
             location.reload();
         });
 
