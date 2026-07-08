@@ -3,52 +3,14 @@
   --bg: #f8fafc;
   --card: #ffffff;
   --text: #1e293b;
-  --pending: #f59e0b;
-  --completed: #10b981;
+  --pending: #f59e0b; /* Orange for Pending */
+  --completed: #10b981; /* Green for Completed */
   --deleted: #ef4444;
 }
 
-body {
-  font-family: 'Inter', sans-serif;
-  background-color: var(--bg);
-  color: var(--text);
-  display: flex;
-  justify-content: center;
-  padding: 40px 20px;
-}
+/* ... keep your existing body, container, input, and button styles ... */
 
-.container {
-  background: var(--card);
-  width: 100%;
-  max-width: 500px;
-  padding: 2rem;
-  border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-}
-
-h1 { text-align: center; margin-bottom: 2rem; }
-
-/* Input Styling */
-form { display: flex; gap: 10px; margin-bottom: 2rem; }
-input[type="text"] {
-  flex: 1;
-  padding: 12px;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  outline: none;
-}
-button {
-  background: var(--primary);
-  color: white;
-  border: none;
-  padding: 0 20px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-/* Todo List Styling */
-ul { list-style: none; padding: 0; }
-li {
+.reminder-item {
   background: #f1f5f9;
   margin-bottom: 10px;
   padding: 15px;
@@ -58,7 +20,49 @@ li {
   align-items: center;
 }
 
-/* Status Colors */
+/* Status Colors - Change text color based on status */
+.status-pending { 
+  color: var(--pending) !important; 
+  font-weight: 600;
+  text-decoration: none !important; /* Ensures NO strikethrough */
+}
+
+.status-completed { 
+  color: var(--completed) !important; 
+  text-decoration: line-through !important; /* Keeps strikethrough for finished tasks */
+  opacity: 0.6;
+}
+
+.reminder-content {
+  flex: 1;
+  margin-left: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.time {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.trash-btn {
+  background: none;
+  color: var(--deleted);
+  padding: 0;
+}
+
+/* Bottom Nav Styling (assuming you had some) */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    justify-content: space-around;
+    background: white;
+    padding: 15px 0;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+}
 .status-pending { color: var(--pending); font-weight: bold; }
 .status-completed { color: var(--completed); text-decoration: line-through; }
 

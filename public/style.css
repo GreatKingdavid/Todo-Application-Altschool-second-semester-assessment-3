@@ -1,208 +1,92 @@
-/* 1. VARIABLES & THEME */
 :root {
-  --primary: #007aff; /* iOS Blue */
-  --bg: #000000; /* Pure Black */
-  --card: #121212; /* Dark Grey for items */
-  --text: #ffffff; /* White text */
-  --pending: #f59e0b; /* Orange */
-  --completed: #10b981; /* Green */
-  --deleted: #ef4444; /* Red */
-  --muted: #888888; /* Grey text */
+  --primary: #6366f1;
+  --bg: #f8fafc;
+  --text: #1e293b;
+  --pending: #f59e0b;
+  --completed: #10b981;
 }
 
-/* 2. CORE RESET */
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #000000; --text: #ffffff; }
+}
+
 body {
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: 'Inter', sans-serif;
   background-color: var(--bg);
   color: var(--text);
   margin: 0;
   display: flex;
   justify-content: center;
-  min-height: 100vh;
 }
 
-.container {
-  width: 100%;
-  max-width: 500px;
-  padding: 2rem 1.5rem;
-  padding-bottom: 100px; /* Space for bottom nav */
+.container { width: 100%; max-width: 500px; padding: 2rem; padding-bottom: 100px; }
+
+h1 { color: #007AFF; font-size: 2.5rem; margin-bottom: 2rem; }
+
+.add-reminder { display: flex; align-items: center; gap: 10px; margin-bottom: 2rem; }
+input[type="text"] {
+  flex: 1; background: transparent; border: none; color: var(--text);
+  font-size: 1.2rem; outline: none;
 }
 
-/* 3. DASHBOARD HEADERS & INPUTS */
-h1 {
-  color: var(--primary);
-  font-size: 2.5rem;
-  margin: 0 0 1.5rem 0;
-}
-
-.add-reminder {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 2rem;
-}
-
-.add-reminder input[type="text"] {
-  flex: 1;
-  background: transparent;
-  border: none;
-  color: var(--text);
-  font-size: 1.2rem;
-  outline: none;
-}
-
-/* 4. TASK ITEMS */
 .reminder-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.2rem 0;
-  border-bottom: 1px solid #222;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1rem 0; border-bottom: 1px solid #333;
 }
 
-.reminder-content {
-  flex: 1;
-  margin-left: 15px;
-}
-
-/* STATUS COLOR LOGIC (NO STRIKETHROUGH) */
-.title {
-  font-size: 1.1rem;
-  display: block;
-}
-
-.status-pending {
-  color: var(--pending) !important;
-  text-decoration: none !important;
-  font-weight: 500;
-}
-
-.status-completed {
-  color: var(--completed) !important;
-  text-decoration: none !important;
-}
-
-.time {
-  font-size: 0.85rem;
-  color: var(--muted);
-  margin-top: 4px;
-}
+.status-pending { color: var(--pending) !important; text-decoration: none !important; }
+.status-completed { color: var(--completed) !important; text-decoration: none !important; }
 
 /* 5. INTERACTIVE BUTTONS */
 .circle-btn {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  border: 2px solid #333;
-  background: transparent;
-  cursor: pointer;
-  transition: all 0.2s;
+  width: 24px; height: 24px; border-radius: 50%; border: 2px solid #333;
+  background: transparent; cursor: pointer;
 }
+.circle-btn.checked { background: #007AFF; border-color: #007AFF; }
 
-.circle-btn.checked {
-  background: var(--primary);
-  border-color: var(--primary);
-}
-
-.trash-btn,
-.edit-btn {
-  background: none;
-  border: none;
-  color: var(--muted);
-  cursor: pointer;
-  font-size: 1.2rem;
-  padding: 5px;
-}
-
-.trash-btn:hover {
-  color: var(--deleted);
-}
-.edit-btn:hover {
-  color: var(--primary);
-}
-
-/* 6. AUTH PAGES (Login/Signup) */
-.auth-page {
-  align-items: center;
-  justify-content: center;
-}
-
-.auth-card {
-  width: 100%;
-  max-width: 400px;
-  text-align: center;
-}
-
-.auth-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin-top: 2rem;
-}
-
-.auth-form input {
-  background: #1c1c1e;
-  border: 1px solid #333;
-  padding: 16px;
-  border-radius: 12px;
-  color: white;
-  font-size: 1rem;
-  outline: none;
-}
-
-.auth-form input:focus {
-  border-color: var(--primary);
-}
-
-.auth-btn {
-  background: var(--primary);
-  color: white;
-  padding: 16px;
-  border-radius: 12px;
-  border: none;
-  font-weight: bold;
-  font-size: 1.1rem;
-  cursor: pointer;
-}
-
-.auth-footer {
-  margin-top: 2rem;
-  color: var(--muted);
-}
-
-.auth-footer a {
-  color: var(--primary);
-  text-decoration: none;
-}
-
-/* 7. BOTTOM NAVIGATION */
+/* NAVIGATION STYLING */
 .bottom-nav {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  max-width: 500px;
-  display: flex;
-  justify-content: space-around;
-  padding: 15px 0;
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(10px);
-  border-top: 1px solid #222;
+  position: fixed; bottom: 0; width: 100%; max-width: 500px;
+  display: flex; justify-content: space-around; padding: 20px 0;
+  background: var(--bg); border-top: 1px solid #333;
+}
+.bottom-nav a { text-decoration: none; color: #888; font-size: 0.8rem; text-align: center; }
+
+/* FIX: Specific yellow highlight for Pending Section */
+#nav-pending.active { color: var(--pending) !important; font-weight: bold; }
+
+/* Default active highlights (Blue) */
+.bottom-nav a.active { color: #007AFF; font-weight: bold; }
+
+/* AUTH STYLES */
+.auth-page { height: 100vh; display: flex; align-items: center; justify-content: center; }
+.auth-card { width: 100%; max-width: 400px; padding: 2rem; text-align: center; }
+.auth-form { display: flex; flex-direction: column; gap: 15px; }
+.auth-form input { background: #1c1c1e; border: 1px solid #333; padding: 16px; border-radius: 12px; color: white; outline: none; }
+.auth-btn { background: #007AFF; color: white; padding: 16px; border-radius: 12px; border: none; font-weight: bold; cursor: pointer; }
+.auth-footer a { color: #007AFF; text-decoration: none; }
+
+/* Overdue Styles */
+.overdue {
+  color: #ef4444 !important;
+  font-weight: bold;
+  animation: pulse 1.5s infinite;
 }
 
-.bottom-nav a {
-  text-decoration: none;
-  color: var(--muted);
-  font-size: 0.75rem;
-  text-align: center;
+.due-date.overdue {
+  color: #ef4444;
+  font-size: 0.85rem;
 }
 
-.bottom-nav a.active {
-  color: var(--primary);
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
 }
 
-.bottom-nav span {
-  display: block;
-  font-size: 1.2rem;
-  margin-bottom: 2px;
+/* Improve Add Form */
+.add-reminder input[type="datetime-local"] {
+  margin-left: 8px;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
 }
