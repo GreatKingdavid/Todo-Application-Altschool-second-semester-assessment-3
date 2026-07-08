@@ -1,8 +1,15 @@
 const nodemailer = require('nodemailer');
+const dns = require('node:dns');
+
+// Render (and several other hosts) don't have outbound IPv6 connectivity.
+// Gmail's SMTP hostname resolves to both AAAA (IPv6) and A (IPv4) records,
+// and Node can pick the IPv6 one first, causing ENETUNREACH. Force IPv4 first.
+dns.setDefaultResultOrder('ipv4first');
 
 // Reuse a single transporter instead of creating a new one per email
 const transporter = nodemailer.createTransport({
   service: 'gmail',
+  family: 4, // belt-and-suspenders: pin the socket itself to IPv4
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS
