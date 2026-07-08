@@ -61,6 +61,7 @@ router.post('/update/:id', requireAuth, async (req, res) => {
     ).populate('user');
 
     if (!updatedTask) return res.status(404).send('Task not found');
+    console.log('DEBUG: status received =', status, '| user email =', updatedTask.user?.email);
 
     // Real-time notification + email for completion
     if (status === 'completed') {
