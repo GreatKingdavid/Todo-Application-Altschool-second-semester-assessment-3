@@ -64,3 +64,28 @@ input[type="text"] {
 .auth-form input { background: #1c1c1e; border: 1px solid #333; padding: 16px; border-radius: 12px; color: white; outline: none; }
 .auth-btn { background: #007AFF; color: white; padding: 16px; border-radius: 12px; border: none; font-weight: bold; cursor: pointer; }
 .auth-footer a { color: #007AFF; text-decoration: none; }
+
+/* Overdue Styles */
+.overdue {
+  color: #ef4444 !important;
+  font-weight: bold;
+  animation: pulse 1.5s infinite;
+}
+
+.due-date.overdue {
+  color: #ef4444;
+  font-size: 0.85rem;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* Improve Add Form */
+.add-reminder input[type="datetime-local"] {
+  margin-left: 8px;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
